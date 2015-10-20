@@ -181,11 +181,11 @@ while( convFlag==1 && iter < iter_max)
     d_v2_mag = d(4); 
     d_v4_mag = d(5);
     
-     if max(abs(Mismatch)) > tolerance,
-         convFlag=1;
-     else
-         convFlag=0;
-     end
+    if max(abs(Mismatch)) > tolerance,
+        convFlag=1;
+    else
+        convFlag=0;
+    end
 end
 
 J % Final Jacobian Matrix
@@ -193,11 +193,14 @@ J % Final Jacobian Matrix
 ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
 % Calculate Power Flow on the Transmission Lines
 disp('bus voltages');
-fprintf('V1 = %f , theta1 = %f \n', V1MAG,theta1*180/pi);
-V1MAG,theta1*180/pi
-V2MAG,theta2*180/pi
-V3MAG,theta3*180/pi
-V4MAG,theta4*180/pi
+fprintf('V1 = %f pu , theta1 = %f° \n', V1MAG,theta1*180/pi);
+fprintf('V2 = %f pu , theta2 = %f° \n', V2MAG,theta2*180/pi);
+fprintf('V3 = %f pu , theta3 = %f° \n', V3MAG,theta3*180/pi);
+fprintf('V4 = %f pu , theta4 = %f° \n', V4MAG,theta4*180/pi);
+% V1MAG,theta1*180/pi
+% V2MAG,theta2*180/pi
+% V3MAG,theta3*180/pi
+% V4MAG,theta4*180/pi
 
 P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), % at Bus 1
 P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), % at Bus 1
