@@ -71,9 +71,9 @@ tolerance= 1e-07; iter_max=10;
 
 % Given Specifications
 V1MAG = 1.0; theta1 = 0;
-P2sp = 1.2; Q2sp = 0.8;
+P2sp = -1.2; Q2sp = -0.8;
 P3sp = 1.5; V3MAG=1.0;
-P4sp = 2.0; Q4sp = 1.6;
+P4sp = -2.0; Q4sp = -1.6;
 
 % Solve for:
 P1sp = 0; Q1sp = 0;
@@ -193,6 +193,7 @@ J % Final Jacobian Matrix
 ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
 % Calculate Power Flow on the Transmission Lines
 disp('bus voltages');
+fprintf('V1 = %f , theta1 = %f \n', V1MAG,theta1*180/pi);
 V1MAG,theta1*180/pi
 V2MAG,theta2*180/pi
 V3MAG,theta3*180/pi
@@ -202,7 +203,7 @@ P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))
 P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), % at Bus 1
 P14=real(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), Q14=imag(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), % at Bus 1
 P23=real(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), Q23=imag(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), % at Bus 2
-P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)),
+P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), % at Bus 3
 
 S(1,1), S(2,1), S(3,1), S(4,1), 
 S
