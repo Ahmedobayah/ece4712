@@ -67,7 +67,7 @@ G
 B
 
 % Solution Parameters
-tolerance= 1e-07; iter_max=20;
+tolerance= 1e-07; iter_max=10;
 
 % Given Specifications
 V1MAG = 1.0; theta1 = 0;
@@ -77,15 +77,15 @@ P4sp = 2.0; Q4sp = 1.6;
 
 % Solve for:
 P1sp = 0; Q1sp = 0;
-V2MAG = 0; theta2 = 0;
+V2MAG = 1.0; theta2 = 0;
 Q3sp = 0; theta3 = 0;
-V4MAG = 0; theta4 =0;
+V4MAG = 1.0; theta4 =0;
+
 % initialize
 iter=0; convFlag=1;
 d_theta2 = 0; d_theta3 = 0; d_theta4 = 0;
 d_v2_mag = 0; d_v4_mag = 0;
 
-%%
 % Jacobian matrix
 % Start Iteration Process for N-R
 while( convFlag==1 && iter < iter_max)
@@ -107,12 +107,12 @@ while( convFlag==1 && iter < iter_max)
     J(1,4) = 2*G(2,2)*V2MAG + V1MAG*(G(2,1)*cos(theta2-theta1) + B(2,1)*sin(theta2-theta1)) + V3MAG*(G(2,3)*cos(theta2-theta3) + B(2,3)*sin(theta2-theta3)) + V4MAG*(G(2,4)*cos(theta2-theta4) + B(2,4)*sin(theta2-theta4)) ;
     % J(1,5) = dP2/d_v4_mag
     J(1,5) = V2MAG*( G(2,4)*cos(theta2-theta4) + B(2,4)*sin(theta2-theta4) );
-    
 
+    %pause()
     % J(2,1) = dP3/d_theta2
-    J(2,1) = V3MAG*V2MAG*(G(3,2)*sin(theta3-theta2) - B(3,1)*cos(theta3-theta2));
+    J(2,1) = V3MAG*V2MAG*(G(3,2)*sin(theta3-theta2) - B(3,2)*cos(theta3-theta2));
     % J(2,2) = dP3/d_theta3
-    J(2,2) = V3MAG*( V1MAG*(-G(3,1)*sin(theta3-theta1) + B(3,1)*cos(theta3-theta1)) + V2MAG*(-G(3,2)*sin(theta3-theta2) + B(2,3)*cos(theta3-theta2)) + V4MAG*(-G(4,4)*sin(theta3-theta4) + B(3,4)*cos(theta3-theta4)) );
+    J(2,2) = V3MAG*( V1MAG*(-G(3,1)*sin(theta3-theta1) + B(3,1)*cos(theta3-theta1)) + V2MAG*(-G(3,2)*sin(theta3-theta2) + B(2,3)*cos(theta3-theta2)) + V4MAG*(-G(3,4)*sin(theta3-theta4) + B(3,4)*cos(theta3-theta4)) );
     % J(2,3) = dP3/d_theta4
     J(2,3) = V3MAG*V4MAG*( G(3,4)*sin(theta3-theta4) - B(3,4)*cos(theta3-theta4));
     % J(2,4) = dP3/d_v2_mag
@@ -125,7 +125,7 @@ while( convFlag==1 && iter < iter_max)
     % J(3,2) = dP4/d_theta3
     J(3,2) = V4MAG*V3MAG*( G(4,3)*sin(theta4-theta3) - B(4,3)*cos(theta4-theta3));
     % J(3,3) = dP4/d_theta4
-    J(3,3) = V4MAG*( V1MAG*(-G(4,1)*sin(theta4-theta1) + B(4,1)*cos(theta4-theta1)) + V2MAG*(-G(4,2)*sin(theta4-theta2) + B(4,3)*cos(theta4-theta2)) + V3MAG*(-G(4,3)*sin(theta4-theta3) + B(4,3)*cos(theta4-theta3)) );
+    J(3,3) = V4MAG*( V1MAG*(-G(4,1)*sin(theta4-theta1) + B(4,1)*cos(theta4-theta1)) + V2MAG*(-G(4,2)*sin(theta4-theta2) + B(4,2)*cos(theta4-theta2)) + V3MAG*(-G(4,3)*sin(theta4-theta3) + B(4,3)*cos(theta4-theta3)) );
     % J(3,4) = dP4/d_v2_mag
     J(3,4) = V4MAG*( G(4,2)*cos(theta4-theta2) + B(4,2)*sin(theta4-theta2) );
     % J(3,5) = dP4/d_v4_mag
@@ -180,27 +180,29 @@ while( convFlag==1 && iter < iter_max)
     d_theta4 = d(3); 
     d_v2_mag = d(4); 
     d_v4_mag = d(5);
-    d
-    pause()
+    
      if max(abs(Mismatch)) > tolerance,
          convFlag=1;
      else
          convFlag=0;
      end
 end
+
 J % Final Jacobian Matrix
-%% 
+
 ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
 % Calculate Power Flow on the Transmission Lines
 disp('bus voltages');
-V1MAG,ANG1*180/pi
-V2MAG,ANG2*180/pi
-V3MAG,ANG3*180/pi
-V4MAG,ANG4*180/pi
+V1MAG,theta1*180/pi
+V2MAG,theta2*180/pi
+V3MAG,theta3*180/pi
+V4MAG,theta4*180/pi
+
+P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), % at Bus 1
 P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), % at Bus 1
 P14=real(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), Q14=imag(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), % at Bus 1
 P23=real(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), Q23=imag(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), % at Bus 2
-P24=real(V(2,1)*conj((V(2,1)-V(4,1))/Z24)), Q24=imag(V(2,1)*conj((V(2,1)-V(4,1))/Z24)), % at Bus 2
 P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)),
 
 S(1,1), S(2,1), S(3,1), S(4,1), 
+S
