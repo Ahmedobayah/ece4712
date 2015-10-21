@@ -202,11 +202,18 @@ fprintf('V4 = %f pu , theta4 = %f° \n', V4MAG,theta4*180/pi);
 % V3MAG,theta3*180/pi
 % V4MAG,theta4*180/pi
 
+
 P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), % at Bus 1
 P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), % at Bus 1
 P14=real(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), Q14=imag(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), % at Bus 1
 P23=real(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), Q23=imag(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), % at Bus 2
 P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), % at Bus 3
+fprintf('Power at each bus.\n');
+fprintf('P12 = %f pu, Q12 = %f pu\n', P12, Q12);
+fprintf('P13 = %f pu, Q13 = %f pu\n', P13, Q13);
+fprintf('P14 = %f pu, Q14 = %f pu\n', P14, Q14);
+fprintf('P23 = %f pu, Q23 = %f pu\n', P23, Q23);
+fprintf('P34 = %f pu, Q34 = %f pu\n', P34, Q34);
 
 S(1,1), S(2,1), S(3,1), S(4,1), 
-S
+fprintf('S1 = %f pu, Q34 = %f pu\n', P34, Q34);
