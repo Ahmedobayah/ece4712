@@ -1,5 +1,7 @@
-% ece 4712
-% project 1- load flow analysis
+% file: project_01.m 
+% ECE 4712
+% Project 1 - Load Flow Analysis
+% Group 3
 
 clear; clc;
 % initialize
@@ -8,17 +10,17 @@ num_bus = 4;
 XL_km=0.376; % ohm/km at 60 Hz
 RL_km= 0.037;
 B_km=4.5e-6; % B mho/km
-kV_LL = 345;
-MVA3Ph=100;
+kV_LL = 345; %line voltage in kV
+MVA3Ph=100; % three phase
 Z_base = kV_LL^2/MVA3Ph;
 B_base = 1/Z_base;
-Y = zeros(4,4);
-G = zeros(4,4);
-B = zeros(4,4);
+Y = zeros(num_bus,num_bus);
+G = zeros(num_bus,num_bus);
+B = zeros(num_bus,num_bus);
 
 % transmission lines in km
 l12 = 100;l13 = 200;l14 = 150;l23 = 120;l34 = 150;
-l = [l12 l13 l14 l23 l34];
+% l = [l12 l13 l14 l23 l34];
 
 % impedance
 Z12 = l12*RL_km + j*l12*XL_km; %?
@@ -26,7 +28,7 @@ Z13 = l13*RL_km + j*l13*XL_km;
 Z14 = l14*RL_km + j*l14*XL_km;
 Z23 = l23*RL_km + j*l23*XL_km;
 Z34 = l34*RL_km + j*l34*XL_km;
-Z_ohm = RL_km.*l + j*XL_km.*l;
+% Z_ohm = RL_km.*l + j*XL_km.*l;
 Z(1,2) = Z12/Z_base; Z(2,1) = Z(1,2);
 Z(1,3) = Z13/Z_base; Z(3,1) = Z(1,3);
 Z(1,4) = Z14/Z_base; Z(4,1) = Z(1,4);
@@ -67,7 +69,7 @@ G
 B
 
 % Solution Parameters
-tolerance= 1e-07; iter_max=10;
+tolerance= 1e-08; iter_max=11;
 
 % Given Specifications
 V1MAG = 1.0; theta1 = 0;
@@ -190,9 +192,9 @@ end
 
 J % Final Jacobian Matrix
 
-ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
+% ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
 % Calculate Power Flow on the Transmission Lines
-disp('bus voltages');
+disp('\nBus voltages');
 fprintf('V1 = %f pu , theta1 = %f° \n', V1MAG,theta1*180/pi);
 fprintf('V2 = %f pu , theta2 = %f° \n', V2MAG,theta2*180/pi);
 fprintf('V3 = %f pu , theta3 = %f° \n', V3MAG,theta3*180/pi);
@@ -203,17 +205,18 @@ fprintf('V4 = %f pu , theta4 = %f° \n', V4MAG,theta4*180/pi);
 % V4MAG,theta4*180/pi
 
 
-P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)), % at Bus 1
-P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)), % at Bus 1
-P14=real(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), Q14=imag(V(1,1)*conj((V(1,1)-V(4,1))/Z14)), % at Bus 1
-P23=real(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), Q23=imag(V(2,1)*conj((V(2,1)-V(3,1))/Z23)), % at Bus 2
-P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)), % at Bus 3
-fprintf('Power at each bus.\n');
+P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)); Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)); % at Bus 1
+P13=real(V(1,1)*conj((V(1,1)-V(3,1))/Z13)); Q13=imag(V(1,1)*conj((V(1,1)-V(3,1))/Z13)); % at Bus 1
+P14=real(V(1,1)*conj((V(1,1)-V(4,1))/Z14)); Q14=imag(V(1,1)*conj((V(1,1)-V(4,1))/Z14)); % at Bus 1
+P23=real(V(2,1)*conj((V(2,1)-V(3,1))/Z23)); Q23=imag(V(2,1)*conj((V(2,1)-V(3,1))/Z23)); % at Bus 2
+P34=real(V(3,1)*conj((V(3,1)-V(4,1))/Z34)); Q34=imag(V(3,1)*conj((V(3,1)-V(4,1))/Z34)); % at Bus 3
+fprintf('\nPower at each bus\n');
 fprintf('P12 = %f pu, Q12 = %f pu\n', P12, Q12);
 fprintf('P13 = %f pu, Q13 = %f pu\n', P13, Q13);
 fprintf('P14 = %f pu, Q14 = %f pu\n', P14, Q14);
 fprintf('P23 = %f pu, Q23 = %f pu\n', P23, Q23);
 fprintf('P34 = %f pu, Q34 = %f pu\n', P34, Q34);
 
-S(1,1), S(2,1), S(3,1), S(4,1), 
-fprintf('S1 = %f pu, Q34 = %f pu\n', P34, Q34);
+
+% S(1,1); S(2,1); S(3,1); S(4,1); 
+S
