@@ -20,15 +20,15 @@ B = zeros(num_bus,num_bus);
 
 % transmission lines in km
 l12 = 100;l13 = 200;l14 = 150;l23 = 120;l34 = 150;
-% l = [l12 l13 l14 l23 l34];
+
 
 % impedance
-Z12 = l12*RL_km + j*l12*XL_km; %?
+Z12 = l12*RL_km + j*l12*XL_km; 
 Z13 = l13*RL_km + j*l13*XL_km;
 Z14 = l14*RL_km + j*l14*XL_km;
 Z23 = l23*RL_km + j*l23*XL_km;
 Z34 = l34*RL_km + j*l34*XL_km;
-% Z_ohm = RL_km.*l + j*XL_km.*l;
+
 Z(1,2) = Z12/Z_base; Z(2,1) = Z(1,2);
 Z(1,3) = Z13/Z_base; Z(3,1) = Z(1,3);
 Z(1,4) = Z14/Z_base; Z(4,1) = Z(1,4);
@@ -42,8 +42,6 @@ B13 = B_km*l13/B_base;
 B14 = B_km*l14/B_base;
 B23 = B_km*l23/B_base;
 B34 = B_km*l34/B_base;
-% B = B_km.*l;
-% B_pu = B/B_base;
 
 % admittance matrix
 for r=1:num_bus
@@ -69,13 +67,13 @@ G
 B
 
 % Solution Parameters
-tolerance= 1e-08; iter_max=11;
+tolerance= 1e-07; iter_max=10;
 
 % Given Specifications
 V1MAG = 1.0; theta1 = 0;
-P2sp = -1.2; Q2sp = -0.8;
+P2sp = 1.2; Q2sp = 0.8;
 P3sp = 1.5; V3MAG=1.0;
-P4sp = -2.0; Q4sp = -1.6;
+P4sp = 2.0; Q4sp = 1.6;
 
 % Solve for:
 P1sp = 0; Q1sp = 0;
@@ -192,17 +190,13 @@ end
 
 J % Final Jacobian Matrix
 
-% ANG2DEG=theta2*180/pi, ANG3DEG=theta3*180/pi, ANG4DEG=theta4*180/pi, V2MAG, V4MAG,
 % Calculate Power Flow on the Transmission Lines
-disp('\nBus voltages');
+fprintf('\nBus voltages\n');
 fprintf('V1 = %f pu , theta1 = %f° \n', V1MAG,theta1*180/pi);
 fprintf('V2 = %f pu , theta2 = %f° \n', V2MAG,theta2*180/pi);
 fprintf('V3 = %f pu , theta3 = %f° \n', V3MAG,theta3*180/pi);
 fprintf('V4 = %f pu , theta4 = %f° \n', V4MAG,theta4*180/pi);
-% V1MAG,theta1*180/pi
-% V2MAG,theta2*180/pi
-% V3MAG,theta3*180/pi
-% V4MAG,theta4*180/pi
+
 
 
 P12=real(V(1,1)*conj((V(1,1)-V(2,1))/Z12)); Q12=imag(V(1,1)*conj((V(1,1)-V(2,1))/Z12)); % at Bus 1
@@ -217,6 +211,4 @@ fprintf('P14 = %f pu, Q14 = %f pu\n', P14, Q14);
 fprintf('P23 = %f pu, Q23 = %f pu\n', P23, Q23);
 fprintf('P34 = %f pu, Q34 = %f pu\n', P34, Q34);
 
-
-% S(1,1); S(2,1); S(3,1); S(4,1); 
 S
