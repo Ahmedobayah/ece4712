@@ -59,8 +59,9 @@ grid on;
 parkit(0); % function to dock all figures --written by Dr. Obeid
 
 % display calculations
-V_load(end-1)
-
+fprintf('V_load ='); disp(V_load(end));
+fprintf('P_load ='); disp(P_load(end));
+fprintf('Q_load ='); disp(Q_load(end));
 
 %% Case II: fluorescent tube light rated 100W, 120V, and pf 0.8 lagging
 P_tube = 100; % Watts
@@ -90,6 +91,10 @@ ylabel('Load Voltage (pu)')
 title('Case II: PV Curve')
 grid on;
 parkit(0);
+% display calculations
+fprintf('Vl_load ='); disp(Vload_t(end));
+fprintf('Pl_load ='); disp(Pload_t(end));
+fprintf('Ql_load ='); disp(Qload_t(end));
 %% Comparison between Case I and Case II
 figure(3)
 plot(P_load,V_load)
